@@ -1,18 +1,12 @@
 defmodule TogudevCoverChanger do
-  @moduledoc """
-  Documentation for TogudevCoverChanger.
-  """
+  use Application
+  use Supervisor
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> TogudevCoverChanger.hello
-      :world
-
-  """
-  def hello do
-    :world
+  def start(_type, _args) do
+    children = [
+      %{id: Uploader, start: {Uploader, :start_link,[[]]}}
+    ]
+    Supervisor.start_link(children, [strategy: :one_to_one])
   end
+
 end
