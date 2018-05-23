@@ -15,7 +15,7 @@ defmodule TogudevCoverChanger.MixProject do
   def application do
     [
       extra_applications: [:logger, :httpoison],
-      mod: {:TogudevCoverChanger, []}
+      mod: {TogudevCoverChanger, []}
     ]
   end
 

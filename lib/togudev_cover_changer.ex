@@ -4,9 +4,9 @@ defmodule TogudevCoverChanger do
 
   def start(_type, _args) do
     children = [
-      %{id: Uploader, start: {Uploader, :start_link,[[]]}}
+      %{id: UploadUrlBuilder, start: {UploadUrlBuilder, :start_link, [[]]}}
     ]
-    Supervisor.start_link(children, [strategy: :one_to_one])
+    Supervisor.start_link(children, [strategy: :one_for_one])
   end
 
 end
