@@ -1,4 +1,5 @@
 defmodule Pipeline.LikesGatherer do
+    use Utils.CredsAware
     
     @base_url "https://api.vk.com/method/"
 
@@ -10,7 +11,10 @@ defmodule Pipeline.LikesGatherer do
         
     end
 
-    
+    defp get_last_100_posts() do
+
+        url = "#{@base_url}wall.get?#{Application.get_env(:togudev_cover_changer, )}"
+    end
 
     defp get_count() do
         req_url = "#{@base_url}"
