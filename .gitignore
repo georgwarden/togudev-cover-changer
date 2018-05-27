@@ -22,6 +22,9 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 togudev_cover_changer-*.tar
 
-#IntelliJ IDEA specific
+# IntelliJ IDEA specific
 *.iml
 .idea/
+
+# Sensitive data (apikey)
+config/secret.exs
