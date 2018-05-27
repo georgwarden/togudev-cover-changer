@@ -8,16 +8,23 @@ defmodule Pipeline.LikesGatherer do
     """
     @spec gather_likes() :: %{number => number}
     def gather_likes() do
-        
+        posts = get_last_100_posts
+        raw_likes = posts |> Enum.map(&get_liking_users/1) # [post] to [[user_id]]
+        user_ids = Enum.dedup raw_likes
+        for user_id <- user_ids do
+            count = Enum.filter(raw_likes, fn like_owner -> like_owner == user_id)
+            |> Enum.count()
+            {user_id, count}
+        end
     end
 
     defp get_last_100_posts() do
-
-        url = "#{@base_url}wall.get?#{Application.get_env(:togudev_cover_changer, )}"
+        
     end
-
-    defp get_count() do
-        req_url = "#{@base_url}"
+    
+    @spec get_liking_users({number, string}) :: [number]
+    defp get_liking_users(post) do
+        
     end
 
 end
