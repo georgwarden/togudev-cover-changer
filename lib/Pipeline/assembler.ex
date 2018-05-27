@@ -11,7 +11,7 @@ defmodule Pipeline.Assembler do
   end
 
   def handle_call(msg, from, state) do
-    Logger.warn "Unexpected call in assembler: #{inspect msg} from #{from}"
+    Logger.warn "Unexpected call in assembler: #{inspect msg} from #{inspect from}"
     {:reply, :ok, state}
   end
 
@@ -22,9 +22,11 @@ defmodule Pipeline.Assembler do
       %{:commentaries, commentaries} -> %{state | commentaries: commentaries}
       _ -> state; Logger.warn "Unexpected cast in assembler: #{inspect data}"
     end
-    {:noreply, is_assemble_incomplete_or_next_stage_and_empty(new_state)}
+    {_, new_state} = is_assemble_incomplete_or_next_stage_and_empty(data)
+    {:noreply, new_state}
   end
 
+  # user = {id, name, avatar}
   def is_assemble_incomplete_or_next_stage_and_empty(data) do
     if data.likes != :nil and data.reposts != :nil and data.commentaries != :nil do
       PipelineKernel.draw processed_data
