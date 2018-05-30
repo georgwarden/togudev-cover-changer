@@ -1,7 +1,7 @@
 defmodule PipelineKernel do
 
   def initial_stage() do
-    likes = LikesGatherer.gather_likes
+    likes = Pipeline.LikesGatherer.gather_likes
     reposts = %{}
     commentaries = %{}
     assemble_likes(likes)
@@ -22,9 +22,10 @@ defmodule PipelineKernel do
   end
 
   def draw(data) do
+    Pipeline.Drawer.draw data
   end
 
-  def upload(data) do
+  def upload(image) do
   end
 
 end

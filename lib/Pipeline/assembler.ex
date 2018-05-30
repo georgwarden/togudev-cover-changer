@@ -28,7 +28,7 @@ defmodule Pipeline.Assembler do
 
   def is_assemble_incomplete_or_next_stage_and_empty(data) do
     if data.likes != :nil and data.reposts != :nil and data.commentaries != :nil do
-      PipelineKernel.draw processed_data
+      PipelineKernel.draw data
       {:complete, %{likes: :nil, reposts: :nil, commentaries: :nil}}
     else
       {:incomplete, data}
