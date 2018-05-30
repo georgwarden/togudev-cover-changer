@@ -1,4 +1,4 @@
-defimpl BinaryUploader, for: bitstring do
+defimpl Uploaders.BinaryUploader, for: bitstring do
 
     def upload(image_in_binary) do
         
