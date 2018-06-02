@@ -1,21 +1,13 @@
-# TogudevCoverChanger
+# togudev-cover-changer
+This is an app which is intended to change a Togudev VK group cover as it is stated in VK API docs.
+It is being written in Elixir,a functional programming language.
 
-**TODO: Add description**
+## Development
+All the development is done within `dev` branch and other. The `master` branch only contains stable releases.
 
-## Installation
+## Contributing
+If you are unfamiliar with Elixir, you might want to google it and learn it, since it is just beautiful.
+Otherwise, fork this repository, make your changes and launch a pull request. All help is appreciated.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `togudev_cover_changer` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:togudev_cover_changer, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/togudev_cover_changer](https://hexdocs.pm/togudev_cover_changer).
-
+## Suggestions
+Any feature request is welcome! Just open an issue and describe what you are thinking of.
