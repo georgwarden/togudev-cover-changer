@@ -1,4 +1,4 @@
-defimpl Uploaders.UploaderFromFs, for: string do
+defimpl Uploaders.Uploader, for: String do
     use Utils.CredsAware
     require Logger
 
@@ -7,7 +7,7 @@ defimpl Uploaders.UploaderFromFs, for: string do
     @upload_confirm_url "#{@base_url}photo???" # TODO
 
     def upload(path_to_file) do
-        {group_id, api_key} = get_group_creds
+        {group_id, api_key} = get_group_creds()
 
     end
 

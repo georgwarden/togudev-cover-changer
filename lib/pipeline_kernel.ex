@@ -26,7 +26,7 @@ defmodule PipelineKernel do
   end
 
   def upload(image) do
-    Uploader.upload(image)
+    Pipeline.Uploader.upload(image)
   end
 
 end

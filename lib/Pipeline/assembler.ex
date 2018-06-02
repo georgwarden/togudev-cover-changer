@@ -17,9 +17,9 @@ defmodule Pipeline.Assembler do
 
   def handle_cast(data, state) do
     new_state = case data do
-      %{:likes, likes} -> %{state | likes: likes}
-      %{:reposts, reposts} -> %{state | reposts: reposts}
-      %{:commentaries, commentaries} -> %{state | commentaries: commentaries}
+      %{likes: likes} -> %{state | likes: likes}
+      %{reposts: reposts} -> %{state | reposts: reposts}
+      %{commentaries: commentaries} -> %{state | commentaries: commentaries}
       _ -> state; Logger.warn "Unexpected cast in assembler: #{inspect data}"
     end
     {_, new_state} = is_assemble_incomplete_or_next_stage_and_empty(data)
