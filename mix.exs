@@ -23,7 +23,8 @@ defmodule TogudevCoverChanger.MixProject do
   defp deps do
     [
       {:httpoison, "~> 1.0"},
-      {:exjson, "~> 0.6.0"}
+      {:exjson, "~> 0.6.0"},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
   end
 end
