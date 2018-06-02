@@ -28,6 +28,10 @@ defmodule Pipeline.Assembler do
 
   def is_assemble_incomplete_or_next_stage_and_empty(data) do
     if data.likes != :nil and data.reposts != :nil and data.commentaries != :nil do
+      processed_data = data.likes
+      |> Map.to_list()
+      |> Enum.sort(fn p1, p2 -> elem(p1, 1) >= elem(p2, 1) end)
+      |> Enum.take(3)
       PipelineKernel.draw data
       {:complete, %{likes: :nil, reposts: :nil, commentaries: :nil}}
     else
