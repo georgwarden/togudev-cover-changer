@@ -36,8 +36,7 @@ defmodule Pipeline.LikesGatherer do
         service_key = get_service_key
         req_url = posts_form_url group_id, service_key
         case HTTPoison.get req_url do
-            {:ok, %HTTPoison.Response{body: body}} -> 
-                posts_parse_response body
+            {:ok, %HTTPoison.Response{body: body}} -> posts_parse_response body
             {:error, error} -> Logger.error("Error getting posts in LikesGatherer: #{inspect error}")
         end
 
@@ -70,17 +69,33 @@ defmodule Pipeline.LikesGatherer do
     @spec get_liking_users({number, string}) :: [number]
     defp get_liking_users(post) do
         {group_id, _} = get_group_creds
-        likes_base_url = "#{@base_url}likes.getList?type=post&owner_id=-#{group_id}"
+        service_key = get_service_key
+        likes_base_url = likes_form_url group_id, service_key
 
         count_likes_url = "#{likes_base_url}&count=0"
         count = case HTTPoison.get(count_likes_url) do
-            {:ok, %HTTPoison.Response{body: body}} -> 
-                ExJSON.parse(body, :to_map) 
-                |> Map.get("response")
-                |> Map.get("count")
+            {:ok, %HTTPoison.Response{body: body}} -> likes_parse_response body
             {:error, error} -> Logger.error("Error getting likes on a particular post: #{inspect error}")
         end
         LikesFromPost.get_all count, likes_base_url
+    end
+
+    @doc """
+    Same to `Pipeline.LikesGatherer.posts_form_url/2`.
+    """
+    @spec likes_form_url(integer(), bitstring()) :: bitstring()
+    defp likes_form_url(group_id, api_key) do
+        "#{@base_url}likes.getList?type=post&owner_id=-#{group_id}&access_token=#{api_key}"
+    end
+
+    @doc """
+    Same as `Pipeline.LikesGatherer.posts_parse_response/1`.
+    """
+    @spec likes_count_parse_response(bitstring()) :: integer()
+    defp likes_count_parse_response(resp_body) do
+        ExJSON.parse(body, :to_map) 
+                |> Map.get("response")
+                |> Map.get("count")
     end
 
     defmodule LikesFromPost do
