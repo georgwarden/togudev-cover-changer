@@ -4,6 +4,8 @@ import org.json.JSONArray
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.togudev.coverdrawer.api.UserProfilesService
+import java.awt.Color
+import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import java.awt.image.BufferedImage
@@ -60,7 +62,11 @@ fun main(args: Array<String>) {
     drawer.drawImage(pfp2, 730, 75, null)
     drawer.drawImage(pfp3, 730, 138, null)
 
-
+    drawer.font = Font("Ubuntu", Font.PLAIN, 24)
+    drawer.color = Color.decode("#C5D3E2")
+    drawer.drawString(top1.getInt("likes").toString(), 693, 63 - 18)
+    drawer.drawString(top2.getInt("likes").toString(), 693, 126 - 18)
+    drawer.drawString(top3.getInt("likes").toString(), 693, 190 - 18)
 
     ImageIO.write(newImage, "png", File(args[1]))
 
