@@ -28,7 +28,7 @@ defimpl Uploaders.Uploader, for: String do
 
     @spec upload_target_parse_response(String.t()) :: String.t()
     def upload_target_parse_response(resp_body) do
-        ExJSON.parse(body, :to_map)
+        ExJSON.parse(resp_body, :to_map)
         |> Map.get("response")
         |> Map.get("upload_url")
     end
@@ -37,7 +37,7 @@ defimpl Uploaders.Uploader, for: String do
         form = {:file, path_to_file}
         body = upload_form_body(form)
         case HTTPoison.post(upload_url, body) do
-            {:ok, %HTTPoison.Response{body: body}} -> IO
+            {:ok, %HTTPoison.Response{body: body}} -> IO.puts "Successful"
             {:error, error} -> Log.error "Error uploading file: #{inspect error}"
         end
     end

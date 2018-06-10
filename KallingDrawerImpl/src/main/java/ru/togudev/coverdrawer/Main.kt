@@ -2,11 +2,14 @@ package ru.togudev.coverdrawer
 
 import org.json.JSONArray
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import ru.togudev.coverdrawer.api.UserProfilesService
+import java.awt.Graphics2D
 import java.awt.geom.Ellipse2D
 import java.awt.image.BufferedImage
 import java.io.File
 import java.net.URL
+import java.util.*
 import javax.imageio.ImageIO
 
 fun main(args: Array<String>) {
@@ -18,27 +21,30 @@ fun main(args: Array<String>) {
     val top3 = top.getJSONObject(2)
 
     val baseImage = BaseImageLoader().load()
-    val drawer = baseImage.createGraphics()
+    val newImage = BufferedImage(795, 200, BufferedImage.TYPE_INT_ARGB)
+    val drawer = newImage.graphics as Graphics2D
 
-    val retrofit = Retrofit.Builder().baseUrl("https://api.vk.com/method/").build()
+    val retrofit = Retrofit.Builder().baseUrl("https://api.vk.com/method/").addConverterFactory(GsonConverterFactory.create()).build()
     val service = retrofit.create(UserProfilesService::class.java)
 
+    val token = object{}.javaClass.classLoader.getResourceAsStream("api_key.txt").let { Scanner(it) }.nextLine()
     val response = service
-            .getProfiles(top1.getInt("id"), top2.getInt("id"), top3.getInt("id"))
+            .getProfiles(token, "${top1.getInt("id")},${top2.getInt("id")},${top3.getInt("id")}")
             .execute()
             .takeIf { it.isSuccessful }
             ?.body()
             ?: throw Exception("Unsuccessful request")
-    val users = response.users
+    val users = response.response
 
     val clip = { image: BufferedImage ->
-        val graphics = image.createGraphics()
-        val shape = Ellipse2D.Float(0f, 0f, 50f, 50f)
+        val graphics = image.graphics as Graphics2D
+        val shape = Ellipse2D.Float()
+        shape.setFrame(0f, 0f, 50f, 50f)
         graphics.clip(shape)
     }
-    val pfp1 = users[0].photo50.let { ImageIO.read(URL(it)) }.apply(clip)
-    val pfp2 = users[1].photo50.let { ImageIO.read(URL(it)) }.apply(clip)
-    val pfp3 = users[2].photo50.let { ImageIO.read(URL(it)) }.apply(clip)
+    val pfp1 = users[0].photo_50.let { ImageIO.read(URL(it)) }.apply(clip)
+    val pfp2 = users[1].photo_50.let { ImageIO.read(URL(it)) }.apply(clip)
+    val pfp3 = users[2].photo_50.let { ImageIO.read(URL(it)) }.apply(clip)
 
     //text; pfp; top-text; top-pfp
     //vertical
@@ -49,10 +55,13 @@ fun main(args: Array<String>) {
     //horizontal
     //795 - 693; 795 - 730
 
-    drawer.drawImage(pfp1, 12, 730, null)
-    drawer.drawImage(pfp2, , 75, 730, null)
-    drawer.drawImage(pfp3, 138, 730, null)
+    drawer.drawImage(baseImage, 0, 0, null)
+    drawer.drawImage(pfp1, 730, 12, null)
+    drawer.drawImage(pfp2, 730, 75, null)
+    drawer.drawImage(pfp3, 730, 138, null)
 
-    ImageIO.write(baseImage, "png", File(args[1]))
+
+
+    ImageIO.write(newImage, "png", File(args[1]))
 
 }
